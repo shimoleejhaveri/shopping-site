@@ -87,7 +87,8 @@ def show_shopping_cart():
         quantity = cart[melon]
         total_cost += (quantity * melon_instance.price)
 
-    return render_template("cart.html", cart_list=cart_list, total_cost=total_cost)
+    return render_template("cart.html", cart_list=cart_list,
+                            total_cost=total_cost)
 
 
 @app.route("/add_to_cart/<melon_id>")
@@ -110,9 +111,11 @@ def add_to_cart(melon_id):
     # - redirect the user to the cart page
     if not session.get('cart'):
         session['cart'] = {}
-        session['cart'][melon_id] = 1
-    else:
+
+    if session['cart'].get('melon_id'):
         session['cart'][melon_id] += 1
+    else:
+        session['cart'][melon_id] = 1
 
     flash("One melon successfully added to cart")
 
